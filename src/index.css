@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Montserrat-regular";
+  src: url("/public/fonts/MyriadPro-Regular.otf");
+}
+
+@font-face {
+  font-family: "Monserrat-medium";
+  src: url("/public/fonts/Montserrat-VariableFont_wght.ttf");
+}
