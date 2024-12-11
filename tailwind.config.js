@@ -12,6 +12,12 @@ export default {
         degraded: "radial-gradient(var(--main), var(--secondary))",
       },
     },
+    screens: {
+      mobil: "576px",
+      tablet: "768px",
+      monitor: "992px",
+      // XLMonitor: "1280",
+    },
   },
   plugins: [],
 };

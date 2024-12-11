@@ -7,7 +7,7 @@ export const SvgIconShowPassword = ({ showPassword }: ISvgIconShowPassword) => {
     <>
       {showPassword ? (
         <svg
-          className="w-6 h-6 text-gray-800 dark:text-secondary"
+          className="w-6 h-6 text-gray-800 dark:text-white tablet:w-8 tablet:h-8"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -25,7 +25,7 @@ export const SvgIconShowPassword = ({ showPassword }: ISvgIconShowPassword) => {
         </svg>
       ) : (
         <svg
-          className="w-6 h-6 text-gray-800 dark:text-secondary"
+          className="w-6 h-6 text-gray-800 dark:text-white tablet:w-8 tablet:h-8"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
