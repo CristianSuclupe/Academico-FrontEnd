@@ -17,7 +17,7 @@ export class Auth {
       return result;
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(`No se pudo logear al sistema: ${error.message}`);
+        throw new Error(`${error.message}`);
       } else {
         throw new Error("No se pudo logear al sistema: Error desconocido");
       }

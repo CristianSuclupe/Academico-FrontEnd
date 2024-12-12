@@ -1,6 +1,10 @@
 import { FormLogin } from "../components/login/FormLogin";
+import { Modal } from "../components/modal/Modal";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
+  const { error, openModalError, setOpenModalError } = useAuth();
+  console.log(openModalError);
   return (
     <main className="h-screen w-screen bg-login bg-cover bg-no-repeat bg-center bg-fixed flex justify-center items-center monitor:justify-start">
       <div className="h-full w-full bg-gradient-to-r from-main to-secondary opacity-20 absolute z-0"></div>
@@ -14,6 +18,12 @@ const Login = () => {
         <div className="z-10 w-[300px] tablet:w-[450px]">
           <FormLogin />
         </div>
+        <Modal open={openModalError} onClose={() => setOpenModalError(false)}>
+          <div>
+            <h3>Error</h3>
+            <p>{error}</p>
+          </div>
+        </Modal>
       </section>
     </main>
   );
