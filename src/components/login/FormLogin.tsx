@@ -1,14 +1,33 @@
 import { useState } from "react";
 import { SvgIconShowPassword } from "./SvgIconShowPassword";
+import { useFormik } from "formik";
+import { initialValues, validatioSchema } from "../../utils/loginForm";
+import { ILogin } from "../../types/auth";
+import { ErrorsForm } from "../error/ErrorsForm";
+import { useAuth } from "../../hooks/useAuth";
 
 export const FormLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { handleLogin } = useAuth();
+
+  const handleSubmit = (data: ILogin) => {
+    handleLogin(data);
+  };
+
+  const formik = useFormik({
+    initialValues: initialValues(),
+    validationSchema: validatioSchema(),
+    validateOnChange: false,
+    onSubmit: async (formValues) => {
+      handleSubmit(formValues);
+    },
+  });
 
   return (
-    <form action="" className="flex flex-col">
+    <form onSubmit={formik.handleSubmit} className="flex flex-col">
       <div className="mb-10">
         <label
-          htmlFor="user"
+          htmlFor="username"
           className="flex text-white ml-2 tablet:text-xl tablet:mb-2"
         >
           <img
@@ -19,11 +38,20 @@ export const FormLogin = () => {
           Usuario
         </label>
         <input
-          type="email"
-          id="user"
-          name="user"
+          type="text"
+          id="username"
+          name="username"
+          value={formik.values.username}
+          onChange={formik.handleChange}
           className="text-gray-950 w-full h-7 rounded-3xl outline-none px-3 focus:ring-2 focus:ring-secondary tablet:h-9 tablet:text-lg bg-white/40 border-2"
         />
+        {formik.errors.username && formik.touched.username && (
+          <ErrorsForm
+            message={formik.errors.username}
+            color="text-white"
+            margin="ml-2"
+          />
+        )}
       </div>
       <div className="mb-14 tablet:mb-16">
         <label
@@ -42,6 +70,8 @@ export const FormLogin = () => {
             type={showPassword ? "text" : "password"}
             id="password"
             name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
             className="text-gray-950 w-full h-7 rounded-3xl outline-none px-4 pr-12 focus:ring-2 focus:ring-secondary tablet:h-9 tablet:text-lg bg-white/40 border-2"
           />
           <button
@@ -52,6 +82,13 @@ export const FormLogin = () => {
             <SvgIconShowPassword showPassword={showPassword} />
           </button>
         </div>
+        {formik.errors.password && formik.touched.password && (
+          <ErrorsForm
+            message={formik.errors.password}
+            color="text-white"
+            margin="ml-2"
+          />
+        )}
       </div>
       <button
         type="submit"

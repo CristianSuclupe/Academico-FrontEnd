@@ -7,7 +7,7 @@ const Login = () => {
       <section className="z-10 flex justify-center items-center flex-col h-screen bg-secondary/50 w-[600px] monitor:ml-64 tablet:w-[550px]">
         <div className="mb-20 flex flex-col justify-center items-center">
           <img src="/images/logo.webp" alt="Logo" />
-          <h1 className="text-white text-4xl tablet:text-5x font-semibold tracking-wider">
+          <h1 className="text-white text-4xl tablet:text-5x font-semibold tracking-widest">
             Bienvenido
           </h1>
         </div>
