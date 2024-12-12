@@ -1,9 +1,10 @@
 import { ILogin } from "../types/auth";
+import { ENV } from "../utils/constants";
 
 export class Auth {
   login = async (data: ILogin) => {
     try {
-      const url = `http://localhost:8080/auth/login`;
+      const url = `${ENV.API_URL}/${ENV.ENDPOINTS.AUTH.LOGIN}`;
       const params = {
         method: "POST",
         headers: {

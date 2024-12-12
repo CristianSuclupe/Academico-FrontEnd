@@ -43,7 +43,7 @@ export const FormLogin = () => {
           name="username"
           value={formik.values.username}
           onChange={formik.handleChange}
-          className="text-gray-950 w-full h-7 rounded-3xl outline-none px-3 focus:ring-2 focus:ring-secondary tablet:h-9 tablet:text-lg bg-white/40 border-2"
+          className="text-gray-950 w-full h-7 rounded-3xl outline-none px-3 focus:ring-2 focus:ring-main tablet:h-9 tablet:text-lg bg-white/40 border-2"
         />
         {formik.errors.username && formik.touched.username && (
           <ErrorsForm
@@ -71,7 +71,7 @@ export const FormLogin = () => {
             name="password"
             value={formik.values.password}
             onChange={formik.handleChange}
-            className="text-gray-950 w-full h-7 rounded-3xl outline-none px-4 pr-12 focus:ring-2 focus:ring-secondary tablet:h-9 tablet:text-lg bg-white/40 border-2"
+            className="text-gray-950 w-full h-7 rounded-3xl outline-none px-4 pr-12 focus:ring-2 focus:ring-main tablet:h-9 tablet:text-lg bg-white/40 border-2"
           />
           <button
             type="button"
