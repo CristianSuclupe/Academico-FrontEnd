@@ -23,6 +23,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
       console.log(response);
     } catch {
+      setError(true);
+      setErrorMessage("No se puede iniciar sesión");
       throw new Error();
     }
   };

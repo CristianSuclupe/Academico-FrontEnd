@@ -1,3 +1,4 @@
+import { ErrorIconSvg } from "../components/error/ErrorIconSvg";
 import { FormLogin } from "../components/login/FormLogin";
 import { Modal } from "../components/modal/Modal";
 import { useAuth } from "../hooks/useAuth";
@@ -18,9 +19,12 @@ const Login = () => {
           <FormLogin />
         </div>
         <Modal open={error} onClose={() => setError(false)}>
-          <div>
-            <h3>Error</h3>
-            <p>{errorMessage}</p>
+          <div className="flex flex-col justify-center items-center ">
+            <ErrorIconSvg />
+            <h3 className="font-semibold text-lg tablet:text-2xl tracking-wider">
+              Error
+            </h3>
+            <p className="tablet:mt-3 tablet:text-lg">{errorMessage}</p>
           </div>
         </Modal>
       </section>

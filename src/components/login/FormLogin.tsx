@@ -48,8 +48,7 @@ export const FormLogin = () => {
         {formik.errors.username && formik.touched.username && (
           <ErrorsForm
             message={formik.errors.username}
-            color="text-white"
-            margin="ml-2"
+            className="text-white ml-2"
           />
         )}
       </div>
@@ -85,8 +84,7 @@ export const FormLogin = () => {
         {formik.errors.password && formik.touched.password && (
           <ErrorsForm
             message={formik.errors.password}
-            color="text-white"
-            margin="ml-2"
+            className="text-white ml-2"
           />
         )}
       </div>
