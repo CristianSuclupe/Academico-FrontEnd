@@ -4,9 +4,9 @@ import { IUser } from "./user";
 export interface IAuthContext {
   authToken?: string | null;
   currentUser?: IUser | null;
-  error?: string | null;
-  openModalError: boolean;
-  setOpenModalError: (value: boolean) => void;
+  errorMessage?: string | null;
+  error: boolean;
+  setError: (value: boolean) => void;
   handleLogin: (data: IAuth) => Promise<void>;
   handleLogout?: () => Promise<void>;
 }
