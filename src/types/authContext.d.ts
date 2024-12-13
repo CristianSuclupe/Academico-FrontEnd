@@ -6,7 +6,7 @@ export interface IAuthContext {
   error: boolean;
   setError: (value: boolean) => void;
   handleLogin: (data: IAuth) => Promise<void>;
-  handleLogout?: () => Promise<void>;
+  handleLogout: () => void;
 }
 
 export type AuthProviderProps = PropsWithChildren;
