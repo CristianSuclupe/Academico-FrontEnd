@@ -4,6 +4,8 @@ export const ENV = {
     AUTH: {
       LOGIN: "auth/login",
     },
+    CLASS: "class",
+    TEACHER: "teacher",
   },
   TOKEN: "token",
 };
