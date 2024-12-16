@@ -1,7 +1,7 @@
 import { IResponse } from "./response";
 
 export interface IClass {
-  classId: string;
+  classId: number;
   courseName: string;
   identifierName: string;
   teacherId: number;

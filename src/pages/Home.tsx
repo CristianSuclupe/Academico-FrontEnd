@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IClassByTeacherResponse } from "../types/class";
 import { Class } from "../api/class";
+import { ClassCard } from "../components/home/ClassCard";
 
 const classController = new Class();
 
@@ -17,10 +18,17 @@ export const Home = () => {
   }, []);
 
   return (
-    <div>
-      {classes?.result.map((classAux) => (
-        <div key={classAux.classId}>{classAux.identifierName}</div>
-      ))}
-    </div>
+    <section>
+      <h1>Cursos</h1>
+      <div className="grid gap-10">
+        {classes?.result.map((classAux) => (
+          <ClassCard
+            classId={classAux.classId}
+            identifierName={classAux.identifierName}
+            courseName={classAux.courseName}
+          />
+        ))}
+      </div>
+    </section>
   );
 };

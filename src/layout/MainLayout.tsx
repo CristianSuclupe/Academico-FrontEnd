@@ -31,10 +31,10 @@ export const MainLayout = () => {
 
   return (
     <AuthProvider>
-      <div className="grid grid-rows-[65px_auto_60px] grid-cols-[100px_auto_100px] h-screen">
+      <div className="grid grid-rows-[65px_auto_60px] monitor:grid-cols-[100px_auto_100px] h-screen">
         <Header toggleSidebar={toggleSidebar} />
         <NavBar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-        <main className="row-start-2 row-end-3 col-start-2 col-end-3">
+        <main className="row-start-2 row-end-3 col-start-1 monitor:col-start-2 monitor:col-end-3 col-end-4 flex items-center my-12 flex-col">
           {isSidebarOpen && (
             <div
               className="fixed inset-0 bg-black bg-opacity-50 z-5 monitor:hidden"
