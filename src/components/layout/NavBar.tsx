@@ -6,23 +6,19 @@ export const NavBar = ({ isSidebarOpen, toggleSidebar }: INavbarProps) => {
   return (
     <nav
       className={`absolute monitor:relative z-10 monitor:z-auto bg-main h-full monitor:h-auto row-start-2 row-end-3 col-start-1 col-end-2 transform w-[220px]
-          tablet:w-[360px] monitor:w-[100px] flex
+          tablet:w-[360px] monitor:w-[120px] flex justify-center
         ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } monitor:translate-x-0 transition-transform duration-300 ease-in-out`}
     >
-      <ul className="flex flex-col gap-5 mt-10 text-white">
-        <li className="ml-4">
-          <Link
-            to={routes.HOME}
-            className="flex items-center gap-2"
-            onClick={toggleSidebar}
-          >
+      <ul className="flex flex-col gap-y-5 mt-10 text-white">
+        <li>
+          <Link to={routes.HOME} className="flex gap-2" onClick={toggleSidebar}>
             <img src="/images/iconhome.webp" alt="icono home" />
             <p>Inicio</p>
           </Link>
         </li>
-        <li className="ml-4">
+        <li>
           <Link
             to={routes.HOME}
             className="flex items-center gap-2"
@@ -32,7 +28,7 @@ export const NavBar = ({ isSidebarOpen, toggleSidebar }: INavbarProps) => {
             <p>Perfil</p>
           </Link>
         </li>
-        <li className="ml-4">
+        <li>
           <Link
             to={routes.HOME}
             className="flex items-center gap-2"
@@ -42,7 +38,7 @@ export const NavBar = ({ isSidebarOpen, toggleSidebar }: INavbarProps) => {
             <p>Perfil</p>
           </Link>
         </li>
-        <li className="ml-4">
+        <li>
           <Link
             to={routes.HOME}
             className="flex items-center gap-2"
@@ -52,7 +48,7 @@ export const NavBar = ({ isSidebarOpen, toggleSidebar }: INavbarProps) => {
             <p>Perfil</p>
           </Link>
         </li>
-        <li className="ml-4">
+        <li>
           <Link
             to={routes.HOME}
             className="flex items-center gap-2"

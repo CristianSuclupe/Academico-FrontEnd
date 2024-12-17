@@ -4,6 +4,7 @@ import Login from "../pages/Login";
 import { AuthLayout } from "../layout/AuthLayout";
 import { MainLayout } from "../layout/MainLayout";
 import { Home } from "../pages/Home";
+import { GradeRegister } from "../pages/GradeRegister";
 
 const router = createBrowserRouter([
   {
@@ -25,8 +26,8 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/a",
-        element: <div>prueba</div>,
+        path: routes.GRADEREGISTER,
+        element: <GradeRegister />,
       },
     ],
   },

@@ -18,11 +18,12 @@ export const Home = () => {
   }, []);
 
   return (
-    <section>
-      <h1>Cursos</h1>
-      <div className="grid gap-10">
+    <section className="flex flex-col gap-5">
+      <h1 className="text-secondary font-semibold text-3xl">Cursos</h1>
+      <div className="grid gap-10 tablet:grid-cols-2 monitor:grid-cols-3">
         {classes?.result.map((classAux) => (
           <ClassCard
+            key={classAux.classId}
             classId={classAux.classId}
             identifierName={classAux.identifierName}
             courseName={classAux.courseName}
