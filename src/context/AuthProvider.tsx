@@ -26,6 +26,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         handleLogout();
         return;
       }
+      setAuthToken(token);
+      setCurrentUser(tokenController.getUser(token));
       if (location.pathname === routes.LOGIN) navigate(routes.HOME);
       return;
     }
@@ -40,7 +42,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (!token) throw new Error("Token no recibido.");
       tokenController.setToken(token);
       setAuthToken(token);
-      setCurrentUser(() => tokenController.getUser(token));
+      setCurrentUser(tokenController.getUser(token));
       navigate(routes.HOME);
     } catch (error: unknown) {
       const errorMessage =

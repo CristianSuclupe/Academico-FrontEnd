@@ -9,3 +9,8 @@ export const ENV = {
   },
   TOKEN: "token",
 };
+
+export const ROLE = {
+  TEACHER: "ROLE_TEACHER",
+  SECRETARY: "ROLE_SECRETARY",
+};

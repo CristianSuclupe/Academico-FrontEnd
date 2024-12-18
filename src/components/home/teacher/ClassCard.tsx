@@ -1,6 +1,6 @@
 import { Link } from "react-router";
-import { IClassCardProps } from "../../types/home";
-import { routes } from "../../router/routes";
+import { IClassCardProps } from "../../../types/home";
+import { routes } from "../../../router/routes";
 
 export const ClassCard = ({
   classId,

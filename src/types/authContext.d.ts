@@ -1,4 +1,5 @@
 import { PropsWithChildren } from "react";
+import { ITokenPayload } from "./token";
 export interface IAuthContext {
   authToken?: string | null;
   currentUser?: ITokenPayload | null;
