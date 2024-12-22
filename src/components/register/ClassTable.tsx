@@ -30,16 +30,17 @@ export const ClassTable = ({ classes }: IClassTableProps) => {
           </tr>
         </thead>
         <tbody>
-          {classes.map((classAux) => (
+          {classes.map((classAux, index) => (
             <tr key={classAux.classId}>
               <td className="border border-blue-200 px-4 py-2 text-gray-700">
-                1
+                {index + 1}
               </td>
+              9
               <td className="border border-blue-200 px-4 py-2 text-gray-700">
                 {classAux.identifierName}
               </td>
               <td className="border border-blue-200 px-4 py-2 text-gray-700">
-                {classAux.course?.name}
+                {classAux.courseName}
               </td>
               <td className="border border-blue-200 px-4 py-2 text-gray-700">
                 {classAux.currentAmount}
@@ -48,10 +49,12 @@ export const ClassTable = ({ classes }: IClassTableProps) => {
                 {classAux.maximunCapacity}
               </td>
               <td className="border border-blue-200 px-4 py-2 text-gray-700">
-                {classAux.teacher?.person.firstName}
+                {classAux.teacherName}
               </td>
               <td className="border border-blue-200 px-4 py-2 text-gray-700">
-                {new Date(classAux.deadLine).toDateString()}
+                {classAux.deadLine
+                  ? new Date(classAux.deadLine).toDateString()
+                  : "No definida"}
               </td>
             </tr>
           ))}
