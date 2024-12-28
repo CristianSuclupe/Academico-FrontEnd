@@ -1,27 +1,70 @@
 import { useEffect, useState } from "react";
 import { ClassTable } from "../../register/ClassTable";
 import { RegisterForm } from "../../register/RegisterForm";
-import { IClass, IClassResponse } from "../../../types/class";
+import { IAllClassesEnable } from "../../../types/class";
 import { Class } from "../../../api/class";
+import { IResponse } from "../../../types/response";
+import { useModal } from "../../../hooks/useModal";
+import { Modal } from "../../modal/Modal";
+import { ErrorIconSvg } from "../../error/ErrorIconSvg";
 
 const classController = new Class();
 
 const SecretaryHome = () => {
-  const [classes, setClasses] = useState<IClass[]>([]);
+  const [classes, setClasses] = useState<IAllClassesEnable[]>([]);
+  const [selectedClassId, setSelectClassId] = useState<number | null>(null);
+  const { open, setOpen, message, setMessage } = useModal();
+
+  const onSelect = (classAux: number) => {
+    if (selectedClassId === classAux) {
+      setSelectClassId(null);
+      return;
+    }
+    setSelectClassId(classAux);
+    //console.log("clase seleccionada");
+  };
 
   useEffect(() => {
     async function getAllClasses() {
-      const response: IClassResponse = await classController.findAllEnable();
-      if (!response || response.statusCode != 200) return null;
-      setClasses(response.result);
+      try {
+        const response: IResponse<IAllClassesEnable[]> =
+          await classController.findAllEnable();
+        if (!response || response.statusCode != 200) return null;
+        setClasses(response.result);
+      } catch (error) {
+        setOpen(true);
+        if (error instanceof Error) {
+          setMessage(error.message);
+          throw new Error(`${error.message}`);
+        } else {
+          setMessage("No se pudo conectar con el servidor");
+          throw new Error("No se pudo conectar con el servidor");
+        }
+      }
     }
     getAllClasses();
   }, []);
+
   return (
     <section>
       <h1 className="text-secondary font-semibold text-3xl mb-10">Matricula</h1>
-      <ClassTable classes={classes} />
-      <RegisterForm />
+      <div className="flex flex-col gap-28">
+        <ClassTable
+          classes={classes}
+          onSelect={onSelect}
+          selectedClassId={selectedClassId}
+        />
+        <RegisterForm setOpen={setOpen} setMessage={setMessage} />
+      </div>
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <div className="flex flex-col justify-center items-center ">
+          <ErrorIconSvg />
+          <h3 className="font-semibold text-lg tablet:text-2xl tracking-wider">
+            Error
+          </h3>
+          <p className="tablet:mt-3 tablet:text-lg">{message}</p>
+        </div>
+      </Modal>
     </section>
   );
 };

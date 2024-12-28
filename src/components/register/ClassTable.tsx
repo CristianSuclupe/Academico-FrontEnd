@@ -1,8 +1,15 @@
 import { IClassTableProps } from "../../types/class";
 
-export const ClassTable = ({ classes }: IClassTableProps) => {
+export const ClassTable = ({
+  classes,
+  onSelect,
+  selectedClassId,
+}: IClassTableProps) => {
   return (
     <div>
+      <h2 className="mb-5 font-medium text-xl text-secondary">
+        Lista de clases disponibles
+      </h2>
       <table className="table-auto border-collapse border border-blue-200 w-full rounded-lg">
         <thead>
           <tr className="bg-teal-50">
@@ -31,11 +38,18 @@ export const ClassTable = ({ classes }: IClassTableProps) => {
         </thead>
         <tbody>
           {classes.map((classAux, index) => (
-            <tr key={classAux.classId}>
+            <tr
+              key={classAux.classId}
+              onClick={() => onSelect(classAux.classId)}
+              className={
+                selectedClassId === classAux.classId
+                  ? "bg-blue-100 cursor-pointer"
+                  : "cursor-pointer"
+              }
+            >
               <td className="border border-blue-200 px-4 py-2 text-gray-700">
                 {index + 1}
               </td>
-              9
               <td className="border border-blue-200 px-4 py-2 text-gray-700">
                 {classAux.identifierName}
               </td>

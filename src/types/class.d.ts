@@ -13,6 +13,8 @@ export interface IClassByTeacher extends IClass {
 
 export interface IClassTableProps {
   classes: IAllClassesEnable[];
+  onSelect: (classAux: number) => void;
+  selectedClassId: number | null;
 }
 
 export interface IAllClassesEnable extends IClass {

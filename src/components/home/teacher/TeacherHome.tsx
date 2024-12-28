@@ -16,7 +16,7 @@ export const TeacherHome = () => {
       const response: IResponse<IClassByTeacher[]> =
         await classController.findByTeacher();
       if (!response || response.statusCode != 200) return null;
-      setClasses(response.restult);
+      setClasses(response.result);
     }
     getClassesByTeacher();
   }, []);
