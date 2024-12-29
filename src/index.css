@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .no-spinner::-webkit-inner-spin-button,
+  .no-spinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none; /* Propiedad estándar */
+    margin: 0;
+  }
+
+  .no-spinner {
+    -moz-appearance: textfield;
+    appearance: textfield; /* Propiedad estándar */
+  }
+}

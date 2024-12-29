@@ -11,6 +11,7 @@ import { IPerson } from "../../../types/person";
 import { Register } from "../../../api/register";
 import { Student } from "../../../api/student";
 import { useAuth } from "../../../hooks/useAuth";
+import { IRegister } from "../../../types/register";
 
 const classController = new Class();
 const registerController = new Register();
@@ -22,30 +23,44 @@ const SecretaryHome = () => {
   const { open, setOpen, message, setMessage } = useModal();
   const { currentUser } = useAuth();
 
-  const onSubmit = async (formData: IPerson, exist: boolean) => {
+  const onSubmit = async (formData: IPerson) => {
     try {
-      if (!selectedClassId)
+      if (!currentUser) return;
+      if (!selectedClassId) {
         throw new Error(
           "Debe seleccionar una clase antes de registrar la matricula"
         );
-      console.log("entramos");
-      let body = {};
-      let responseStudent;
-      if (!exist) {
-        responseStudent = await studentController.saveStudent(formData);
-        if (!responseStudent || responseStudent.statusCode != 200) return null;
+      }
+      const studentExist: IResponse<IPerson> =
+        await studentController.findByDni(formData.dni);
+      if (studentExist.statusCode === 404) {
+        const responseStudent: IResponse<string> =
+          await studentController.saveStudent(formData);
+        if (!responseStudent || responseStudent.statusCode != 200)
+          throw new Error(responseStudent.message);
       }
 
-      body = {
+      const body: IRegister = {
         secretaryDni: currentUser?.dni,
         studentDni: formData.dni,
-        selectedClassId,
+        classId: selectedClassId,
       };
-      console.log(body);
-      await registerController.saveRegister(body);
+      const response: IResponse<string> = await registerController.saveRegister(
+        body
+      );
+      if (!response || response.statusCode !== 200)
+        throw new Error(response.message);
     } catch (error) {
-      if (error instanceof Error) throw new Error(`${error.message}`);
+      setOpen(true);
+      if (error instanceof Error) {
+        setMessage(error.message);
+        throw Error(error.message);
+      }
     }
+  };
+
+  const onCancel = () => {
+    setSelectClassId(null);
   };
 
   const onSelect = (classAux: number) => {
@@ -62,13 +77,14 @@ const SecretaryHome = () => {
       try {
         const response: IResponse<IAllClassesEnable[]> =
           await classController.findAllEnable();
-        if (!response || response.statusCode != 200) return null;
+        if (!response || response.statusCode != 200)
+          throw new Error(response.message);
         setClasses(response.result);
       } catch (error) {
         setOpen(true);
         if (error instanceof Error) {
           setMessage(error.message);
-          throw new Error(`${error.message}`);
+          throw Error(`${error.message}`);
         } else {
           setMessage("No se pudo conectar con el servidor");
           throw new Error("No se pudo conectar con el servidor");
@@ -91,6 +107,7 @@ const SecretaryHome = () => {
           setOpen={setOpen}
           setMessage={setMessage}
           onSubmit={onSubmit}
+          onCancel={onCancel}
         />
       </div>
       <Modal open={open} onClose={() => setOpen(false)}>

@@ -13,18 +13,19 @@ export const RegisterForm = ({
   setOpen,
   setMessage,
   onSubmit,
+  onCancel,
 }: IRegisterFormProps) => {
   const [dni, setDni] = useState("");
   const [lastDni, setLastDni] = useState("");
-  const [exist, setExist] = useState(false);
 
   const handleSubmit = (data: IPerson) => {
-    // formik.setValues({
-    //   ...formik.values,
-    //   dni: dni,
-    // });
-    console.log("submit");
-    onSubmit(data, exist);
+    onSubmit(data);
+  };
+
+  const handleCancel = () => {
+    onCancel();
+    setDni("");
+    formik.resetForm();
   };
 
   const formik = useFormik({
@@ -57,7 +58,6 @@ export const RegisterForm = ({
       const response: IResponse<IPerson> = await studentController.findByDni(
         dni
       );
-      console.log(response);
       if (
         !response ||
         response.statusCode !== 200 ||
@@ -77,12 +77,10 @@ export const RegisterForm = ({
           ? new Date(response.result.birthday).toISOString().split("T")[0]
           : "",
       });
-      setExist(true);
     } catch (error) {
       setDni("");
       formik.resetForm();
       setOpen(true);
-      setExist(false);
       if (error instanceof Error) {
         console.log(error);
         setMessage(error.message);
@@ -96,7 +94,7 @@ export const RegisterForm = ({
   return (
     <div className="mt-10">
       <h2 className="mb-5 font-medium text-xl text-secondary">
-        Registro de alumno
+        Datos del alumno
       </h2>
       <form
         className="mt-10 flex gap-10 flex-col"
@@ -107,6 +105,7 @@ export const RegisterForm = ({
             <input
               id="dni"
               name="dni"
+              maxLength={8}
               className="w-full border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
               value={dni}
               placeholder="Ingrese el dni"
@@ -182,9 +181,12 @@ export const RegisterForm = ({
           </div>
           <div className="w-1/3">
             <input
+              type="number"
               id="phoneNumber"
               name="phoneNumber"
-              className="w-full border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
+              min={0}
+              maxLength={8}
+              className="w-full border no-spinner border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
               placeholder="Ingrese número de celular"
               value={formik.values.phoneNumber}
               onChange={formik.handleChange}
@@ -223,9 +225,11 @@ export const RegisterForm = ({
             Registrar
           </button>
           <button
+            type="button"
             className="rounded-3xl text-white h-10 text-lg w-1/2
               bg-red-500 focus:outline-none
                 tablet:h-11 tablet:text-xl font-semibold"
+            onClick={handleCancel}
           >
             Cancelar
           </button>
