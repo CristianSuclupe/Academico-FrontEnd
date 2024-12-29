@@ -1,6 +1,7 @@
 import { Token } from "./token";
 import { ENV } from "../utils/constants";
 import { authFetch } from "../utils/authFetch";
+import { IPerson } from "../types/person";
 
 const tokenController = new Token();
 export class Student {
@@ -17,8 +18,32 @@ export class Student {
       };
       const response = await authFetch(url, params);
       if (!response) return null;
-      const result = await response.json();
-      return result;
+      return response;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(`${error.message}`);
+      } else {
+        throw new Error("No se pudo logear al sistema: Error desconocido");
+      }
+    }
+  };
+
+  saveStudent = async (data: IPerson) => {
+    try {
+      const token = await tokenController.getToken();
+      if (!token) return null;
+      const url = `${ENV.API_URL}/${ENV.ENDPOINTS.STUDENT}`;
+      const params = {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      };
+      const response = await authFetch(url, params);
+      if (!response) return null;
+      return response;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(`${error.message}`);

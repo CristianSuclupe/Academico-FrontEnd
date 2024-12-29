@@ -19,8 +19,7 @@ export class Class {
       };
       const response = await authFetch(url, params);
       if (!response) return null;
-      const result = await response.json();
-      return result;
+      return response;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(`${error.message}`);
@@ -43,8 +42,7 @@ export class Class {
       };
       const response = await authFetch(url, params);
       if (!response) return null;
-      const result = await response.json();
-      return result;
+      return response;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(`${error.message}`);

@@ -7,13 +7,46 @@ import { IResponse } from "../../../types/response";
 import { useModal } from "../../../hooks/useModal";
 import { Modal } from "../../modal/Modal";
 import { ErrorIconSvg } from "../../error/ErrorIconSvg";
+import { IPerson } from "../../../types/person";
+import { Register } from "../../../api/register";
+import { Student } from "../../../api/student";
+import { useAuth } from "../../../hooks/useAuth";
 
 const classController = new Class();
+const registerController = new Register();
+const studentController = new Student();
 
 const SecretaryHome = () => {
   const [classes, setClasses] = useState<IAllClassesEnable[]>([]);
   const [selectedClassId, setSelectClassId] = useState<number | null>(null);
   const { open, setOpen, message, setMessage } = useModal();
+  const { currentUser } = useAuth();
+
+  const onSubmit = async (formData: IPerson, exist: boolean) => {
+    try {
+      if (!selectedClassId)
+        throw new Error(
+          "Debe seleccionar una clase antes de registrar la matricula"
+        );
+      console.log("entramos");
+      let body = {};
+      let responseStudent;
+      if (!exist) {
+        responseStudent = await studentController.saveStudent(formData);
+        if (!responseStudent || responseStudent.statusCode != 200) return null;
+      }
+
+      body = {
+        secretaryDni: currentUser?.dni,
+        studentDni: formData.dni,
+        selectedClassId,
+      };
+      console.log(body);
+      await registerController.saveRegister(body);
+    } catch (error) {
+      if (error instanceof Error) throw new Error(`${error.message}`);
+    }
+  };
 
   const onSelect = (classAux: number) => {
     if (selectedClassId === classAux) {
@@ -54,7 +87,11 @@ const SecretaryHome = () => {
           onSelect={onSelect}
           selectedClassId={selectedClassId}
         />
-        <RegisterForm setOpen={setOpen} setMessage={setMessage} />
+        <RegisterForm
+          setOpen={setOpen}
+          setMessage={setMessage}
+          onSubmit={onSubmit}
+        />
       </div>
       <Modal open={open} onClose={() => setOpen(false)}>
         <div className="flex flex-col justify-center items-center ">

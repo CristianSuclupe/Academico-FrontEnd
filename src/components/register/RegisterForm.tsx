@@ -5,15 +5,26 @@ import { initialValues, validationSchema } from "../../utils/registerForm";
 import { IPerson } from "../../types/person";
 import { IResponse } from "../../types/response";
 import { IRegisterFormProps } from "../../types/registerForm";
+import { ErrorsForm } from "../error/ErrorsForm";
 
 const studentController = new Student();
 
-export const RegisterForm = ({ setOpen, setMessage }: IRegisterFormProps) => {
+export const RegisterForm = ({
+  setOpen,
+  setMessage,
+  onSubmit,
+}: IRegisterFormProps) => {
   const [dni, setDni] = useState("");
   const [lastDni, setLastDni] = useState("");
+  const [exist, setExist] = useState(false);
 
-  const handleSubmit = (data: any) => {
-    console.log("enviado");
+  const handleSubmit = (data: IPerson) => {
+    // formik.setValues({
+    //   ...formik.values,
+    //   dni: dni,
+    // });
+    console.log("submit");
+    onSubmit(data, exist);
   };
 
   const formik = useFormik({
@@ -24,6 +35,11 @@ export const RegisterForm = ({ setOpen, setMessage }: IRegisterFormProps) => {
       handleSubmit(formValues);
     },
   });
+
+  const handleDniChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDni(event.target.value);
+    formik.setFieldValue("dni", event.target.value);
+  };
 
   const handleDniEnter = async (
     event: React.KeyboardEvent<HTMLInputElement>
@@ -38,14 +54,16 @@ export const RegisterForm = ({ setOpen, setMessage }: IRegisterFormProps) => {
 
   const checkIfStudentExist = async () => {
     try {
-      const response: IResponse<IPerson | string> =
-        await studentController.findByDni(dni);
+      const response: IResponse<IPerson> = await studentController.findByDni(
+        dni
+      );
+      console.log(response);
       if (
         !response ||
         response.statusCode !== 200 ||
         typeof response.result === "string"
       ) {
-        return;
+        throw new Error(response.message);
       }
       formik.setValues({
         ...formik.values,
@@ -59,10 +77,12 @@ export const RegisterForm = ({ setOpen, setMessage }: IRegisterFormProps) => {
           ? new Date(response.result.birthday).toISOString().split("T")[0]
           : "",
       });
+      setExist(true);
     } catch (error) {
       setDni("");
       formik.resetForm();
       setOpen(true);
+      setExist(false);
       if (error instanceof Error) {
         console.log(error);
         setMessage(error.message);
@@ -79,61 +99,103 @@ export const RegisterForm = ({ setOpen, setMessage }: IRegisterFormProps) => {
         Registro de alumno
       </h2>
       <form
-        className="mt-10 flex gap-5 flex-col"
+        className="mt-10 flex gap-10 flex-col"
         onSubmit={formik.handleSubmit}
       >
         <div className="flex gap-5 justify-between">
-          <input
-            id="dni"
-            name="dni"
-            className="w-1/3 border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
-            value={dni}
-            placeholder="Ingrese el dni"
-            onChange={(e) => setDni(e.target.value)}
-            onKeyDown={handleDniEnter}
-          />
-          <input
-            id="firstName"
-            name="firstName"
-            className="w-1/3 border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
-            placeholder="Ingrese el primer nombre"
-            value={formik.values.firstName}
-            onChange={formik.handleChange}
-          />
-          <input
-            id="middleName"
-            name="middleName"
-            className="w-1/3 border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
-            placeholder="Ingrese el segundo nombre"
-            value={formik.values.middleName}
-            onChange={formik.handleChange}
-          />
+          <div className="w-1/3">
+            <input
+              id="dni"
+              name="dni"
+              className="w-full border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
+              value={dni}
+              placeholder="Ingrese el dni"
+              onChange={handleDniChange}
+              onKeyDown={handleDniEnter}
+            />
+            {formik.errors.dni && formik.touched.dni && (
+              <ErrorsForm
+                message={formik.errors.dni}
+                className="text-black mt-2"
+              />
+            )}
+          </div>
+          <div className="w-1/3">
+            <input
+              id="firstName"
+              name="firstName"
+              className="w-full border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
+              placeholder="Ingrese el primer nombre"
+              value={formik.values.firstName}
+              onChange={formik.handleChange}
+            />
+            {formik.errors.firstName && formik.touched.firstName && (
+              <ErrorsForm
+                message={formik.errors.firstName}
+                className="text-black mt-2"
+              />
+            )}
+          </div>
+          <div className="w-1/3">
+            <input
+              id="middleName"
+              name="middleName"
+              className="w-full border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
+              placeholder="Ingrese el segundo nombre"
+              value={formik.values.middleName}
+              onChange={formik.handleChange}
+            />
+          </div>
         </div>
         <div className="flex gap-5 justify-between">
-          <input
-            id="lastName"
-            name="lastName"
-            className="w-1/3 border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
-            placeholder="Ingrese los apellidos"
-            value={formik.values.lastName}
-            onChange={formik.handleChange}
-          />
-          <input
-            id="address"
-            name="address"
-            className="w-1/3 border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
-            placeholder="Ingrese dirección domiciliaria"
-            value={formik.values.address}
-            onChange={formik.handleChange}
-          />
-          <input
-            id="phoneNumber"
-            name="phoneNumber"
-            className="w-1/3 border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
-            placeholder="Ingrese número de celular"
-            value={formik.values.phoneNumber}
-            onChange={formik.handleChange}
-          />
+          <div className="w-1/3">
+            <input
+              id="lastName"
+              name="lastName"
+              className="w-full border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
+              placeholder="Ingrese los apellidos"
+              value={formik.values.lastName}
+              onChange={formik.handleChange}
+            />
+            {formik.errors.lastName && formik.touched.lastName && (
+              <ErrorsForm
+                message={formik.errors.lastName}
+                className="text-black mt-2"
+              />
+            )}
+          </div>
+          <div className="w-1/3">
+            <input
+              id="address"
+              name="address"
+              className="w-full border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
+              placeholder="Ingrese dirección domiciliaria"
+              value={formik.values.address}
+              onChange={formik.handleChange}
+            />
+            {formik.errors.address && formik.touched.address && (
+              <ErrorsForm
+                message={formik.errors.address}
+                className="text-black mt-2"
+              />
+            )}
+          </div>
+          <div className="w-1/3">
+            <input
+              id="phoneNumber"
+              name="phoneNumber"
+              className="w-full border border-blue-300 rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-main"
+              placeholder="Ingrese número de celular"
+              value={formik.values.phoneNumber}
+              onChange={formik.handleChange}
+            />
+            {formik.errors.phoneNumber && formik.touched.phoneNumber && (
+              <ErrorsForm
+                message={formik.errors.phoneNumber}
+                className="text-black mt-2"
+              />
+            )}
+          </div>
         </div>
         <div>
           <input
@@ -144,6 +206,12 @@ export const RegisterForm = ({ setOpen, setMessage }: IRegisterFormProps) => {
             value={formik.values.birthday}
             onChange={formik.handleChange}
           />
+          {formik.errors.birthday && formik.touched.birthday && (
+            <ErrorsForm
+              message={formik.errors.birthday}
+              className="text-black mt-2"
+            />
+          )}
         </div>
         <div className="flex gap-5 justify-between w-1/2 mt-10">
           <button

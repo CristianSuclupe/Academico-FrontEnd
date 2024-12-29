@@ -28,17 +28,13 @@ export const authFetch = async (url: string, params?: IAuthParams) => {
 
   try {
     const response = await fetch(url, paramsTemp);
-
-    if (!response.ok) {
-      if (response.status === 401 || response.status === 403) {
-        console.error(`Error ${response.status}: No autorizado o prohibido`);
-        logout();
-      }
-
-      throw new Error(`HTTP error! status: ${response.status}`);
+    if (!response) throw Error;
+    const result = await response.json();
+    if (result.statusCode === 401 || response.status === 403) {
+      logout();
+      throw new Error(` ${result.message}`);
     }
-
-    return response;
+    return result;
   } catch (error) {
     if (error instanceof Error) {
       console.error("Error en authFetch:", error.message);

@@ -16,7 +16,6 @@ export const validationSchema = () => {
   return Yup.object({
     dni: Yup.string().required("Este campo es obligatorio"),
     firstName: Yup.string().required("Este campo es obligatorio"),
-    middleName: Yup.string().required("Este campo es obligatorio"),
     lastName: Yup.string().required("Este campo es obligatorio"),
     address: Yup.string().required("Este campo es obligatorio"),
     phoneNumber: Yup.string().required("Este campo es obligatorio"),
