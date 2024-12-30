@@ -1,8 +1,10 @@
 import { Link } from "react-router";
 import { INavbarProps } from "../../types/navbar";
 import { routes } from "../../router/routes";
+import { useAuth } from "../../hooks/useAuth";
 
 export const NavBar = ({ isSidebarOpen, toggleSidebar }: INavbarProps) => {
+  const { handleLogout } = useAuth();
   return (
     <nav
       className={`absolute monitor:relative z-10 monitor:z-auto bg-main h-full monitor:h-auto row-start-2 row-end-3 col-start-1 col-end-2 transform w-[220px]
@@ -59,6 +61,7 @@ export const NavBar = ({ isSidebarOpen, toggleSidebar }: INavbarProps) => {
           </Link>
         </li>
       </ul>
+      <button onClick={handleLogout}>Salir</button>
     </nav>
   );
 };

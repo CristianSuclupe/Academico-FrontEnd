@@ -1,6 +1,8 @@
 import { IModalProps } from "../../types/modal";
+import { ErrorIconSvg } from "./icons/ErrorIconSvg";
+import { SuccessIconSvg } from "./icons/SuccessIconSvg";
 
-export const Modal = ({ open, onClose, children }: IModalProps) => {
+export const Modal = ({ open, onClose, children, type }: IModalProps) => {
   return (
     <div
       onClick={onClose}
@@ -20,7 +22,14 @@ export const Modal = ({ open, onClose, children }: IModalProps) => {
         >
           X
         </button>
-        {children}
+        <div className="flex flex-col justify-center items-center ">
+          {type === "success" ? <SuccessIconSvg /> : <ErrorIconSvg />}
+          <h3 className="font-semibold text-lg tablet:text-2xl tracking-wider">
+            {type}
+          </h3>
+          {children}
+          {/* <p className="tablet:mt-3 tablet:text-lg">{message}</p> */}
+        </div>
       </div>
     </div>
   );

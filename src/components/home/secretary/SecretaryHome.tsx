@@ -6,7 +6,6 @@ import { Class } from "../../../api/class";
 import { IResponse } from "../../../types/response";
 import { useModal } from "../../../hooks/useModal";
 import { Modal } from "../../modal/Modal";
-import { ErrorIconSvg } from "../../error/ErrorIconSvg";
 import { IPerson } from "../../../types/person";
 import { Register } from "../../../api/register";
 import { Student } from "../../../api/student";
@@ -20,7 +19,8 @@ const studentController = new Student();
 const SecretaryHome = () => {
   const [classes, setClasses] = useState<IAllClassesEnable[]>([]);
   const [selectedClassId, setSelectClassId] = useState<number | null>(null);
-  const { open, setOpen, message, setMessage } = useModal();
+  const [trigger, setTrigger] = useState(false);
+  const { open, setOpen, message, setMessage, type, setType } = useModal();
   const { currentUser } = useAuth();
 
   const onSubmit = async (formData: IPerson) => {
@@ -50,8 +50,13 @@ const SecretaryHome = () => {
       );
       if (!response || response.statusCode !== 200)
         throw new Error(response.message);
+      setOpen(true);
+      setType("success");
+      setMessage(response.result);
+      setTrigger(true);
     } catch (error) {
       setOpen(true);
+      setType("error");
       if (error instanceof Error) {
         setMessage(error.message);
         throw Error(error.message);
@@ -91,8 +96,9 @@ const SecretaryHome = () => {
         }
       }
     }
+    setTrigger(false);
     getAllClasses();
-  }, []);
+  }, [trigger]);
 
   return (
     <section>
@@ -110,14 +116,8 @@ const SecretaryHome = () => {
           onCancel={onCancel}
         />
       </div>
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <div className="flex flex-col justify-center items-center ">
-          <ErrorIconSvg />
-          <h3 className="font-semibold text-lg tablet:text-2xl tracking-wider">
-            Error
-          </h3>
-          <p className="tablet:mt-3 tablet:text-lg">{message}</p>
-        </div>
+      <Modal open={open} type={type} onClose={() => setOpen(false)}>
+        <p className="tablet:mt-3 tablet:text-lg">{message}</p>
       </Modal>
     </section>
   );
