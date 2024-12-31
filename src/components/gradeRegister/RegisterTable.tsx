@@ -1,4 +1,9 @@
-export const RegisterTable = () => {
+import { IRegisterTableProps } from "../../types/student";
+
+export const RegisterTable = ({
+  students,
+  setStudents,
+}: IRegisterTableProps) => {
   return (
     <div className="overflow-x-auto">
       <table className="table-auto border-collapse border border-blue-200 w-full rounded-lg">
@@ -25,33 +30,20 @@ export const RegisterTable = () => {
 
         {/* Cuerpo de la tabla */}
         <tbody>
-          <tr>
-            <td className="border border-blue-200 px-4 py-2 text-gray-700">
-              1
-            </td>
-            <td className="border border-blue-200 px-4 py-2 text-gray-700">
-              Perez Sánchez
-            </td>
-            <td className="border border-blue-200 px-4 py-2 text-gray-700">
-              Brando
-            </td>
-            <td className="border border-blue-200 px-4 py-2 text-gray-700">
-              175816
-            </td>
-            <td className="border border-blue-200 px-4 py-2 text-gray-700">
-              18
-            </td>
-          </tr>
-
-          {/* Filas vacías */}
-          {Array.from({ length: 5 }).map((_, index) => (
-            <tr key={index}>
-              <td className="border border-blue-200 px-4 py-6"></td>
-              <td className="border border-blue-200 px-4 py-6"></td>
-              <td className="border border-blue-200 px-4 py-6"></td>
-              <td className="border border-blue-200 px-4 py-6"></td>
-              <td className="border border-blue-200 px-4 py-6">
-                <input type="number" className="w-auto" />
+          {students?.map((student, index) => (
+            <tr key={student.studentId}>
+              <td className="border border-blue-200 px-4 py-6">{index + 1}</td>
+              <td className="border border-blue-200 px-4 py-2">
+                {student.lastName}
+              </td>
+              <td className="border border-blue-200 px-4 py-2">
+                {student.name}
+              </td>
+              <td className="border border-blue-200 px-4 py-2">
+                {student.dni}
+              </td>
+              <td className="border border-blue-200 px-4 py-2 w-[80px]">
+                <input type="number" value={student.score} />
               </td>
             </tr>
           ))}
