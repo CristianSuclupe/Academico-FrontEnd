@@ -25,7 +25,7 @@ export const Modal = ({ open, onClose, children, type }: IModalProps) => {
         <div className="flex flex-col justify-center items-center ">
           {type === "success" ? <SuccessIconSvg /> : <ErrorIconSvg />}
           <h3 className="font-semibold text-lg tablet:text-2xl tracking-wider">
-            {type}
+            {type.toUpperCase()}
           </h3>
           {children}
           {/* <p className="tablet:mt-3 tablet:text-lg">{message}</p> */}

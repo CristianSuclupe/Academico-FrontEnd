@@ -42,9 +42,9 @@ export const RegisterTable = ({ students, onSubmit }: IRegisterTableProps) => {
             <th className="border border-blue-200 px-4 py-2 text-left text-gray-500 w-[5%]">
               N°
             </th>
-            <th className="border border-blue-200 px-4 py-2 text-left text-gray-500 w-[5%]">
+            {/* <th className="border border-blue-200 px-4 py-2 text-left text-gray-500 w-[5%]">
               Id
-            </th>
+            </th> */}
             <th className="border border-blue-200 px-4 py-2 text-left text-gray-500 w-[30%]">
               Apellidos
             </th>
@@ -55,7 +55,7 @@ export const RegisterTable = ({ students, onSubmit }: IRegisterTableProps) => {
               Código
             </th>
             <th className="border border-blue-200 px-4 py-2 text-left text-gray-500 w-[5%]">
-              Nota 1
+              Nota
             </th>
           </tr>
         </thead>
@@ -65,9 +65,9 @@ export const RegisterTable = ({ students, onSubmit }: IRegisterTableProps) => {
           {students?.map((student, index) => (
             <tr key={student.studentId}>
               <td className="border border-blue-200 px-4 py-3">{index + 1}</td>
-              <td className="border border-blue-200 px-4 py-3">
+              {/* <td className="border border-blue-200 px-4 py-3">
                 {student.studentId}
-              </td>
+              </td> */}
               <td className="border border-blue-200 px-4 py-2">
                 {student.lastName}
               </td>

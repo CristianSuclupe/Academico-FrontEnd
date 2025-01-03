@@ -7,11 +7,16 @@ import { IResponse } from "../types/response";
 import { IRegisterNote } from "../types/registerNote";
 import { AcademicProduct } from "../api/academicProduct";
 import { IAcademicProduct } from "../types/academicProduct";
+import { RegisterNote } from "../api/registerNote";
+import { useModal } from "../hooks/useModal";
+import { Modal } from "../components/modal/Modal";
 
 const studentController = new Student();
 const academicProductController = new AcademicProduct();
+const registerNoteController = new RegisterNote();
 
 export const GradeRegister = () => {
+  const { open, setOpen, message, setMessage, type, setType } = useModal();
   const [students, setStudents] = useState<IStudentPerClass[]>();
   const [academicProducts, setAcademicProducts] = useState<IAcademicProduct[]>(
     []
@@ -38,12 +43,13 @@ export const GradeRegister = () => {
           throw new Error(response.message);
         setAcademicProducts(response.result);
       } catch (error) {
-        // setOpen(true);
+        setOpen(true);
         if (error instanceof Error) {
-          // setMessage(error.message);
+          setType("Error");
+          setMessage(error.message);
           throw Error(`${error.message}`);
         } else {
-          // setMessage("No se pudo conectar con el servidor");
+          setMessage("No se pudo conectar con el servidor");
           throw new Error("No se pudo conectar con el servidor");
         }
       }
@@ -52,7 +58,7 @@ export const GradeRegister = () => {
   }, []);
 
   useEffect(() => {
-    if (!academicProducts) return;
+    if (academicProducts.length === 0) return;
     async function getStudentsPerClass() {
       try {
         const response: IResponse<IStudentPerClass[]> =
@@ -81,29 +87,34 @@ export const GradeRegister = () => {
     if (academicProducts.length > 0 && !academicProductId) {
       setAcademicProductId(academicProducts[0].academicProductId);
     }
-  }, [students]);
+  }, [academicProducts]);
 
-  const onSubmit = (data: IRegisterNote[]) => {
-    const result = data.map((item) => ({
+  const onSubmit = async (data: IRegisterNote[]) => {
+    const body: IRegisterNote[] = data.map((item) => ({
       ...item,
-      academicProductId: academicProductId,
+      academicProductId: academicProductId ?? undefined,
     }));
 
     try {
-      console.log(result);
+      const response: IResponse<string> =
+        await registerNoteController.saveRegisterNote(body);
+      if (!response || response.statusCode !== 200)
+        throw new Error(response.message);
+      setOpen(true);
+      setType("success");
+      setMessage(response.result);
+      // setTrigger(true);
     } catch (error) {
-      // setOpen(true);
+      setOpen(true);
       if (error instanceof Error) {
-        // setMessage(error.message);
+        setMessage(error.message);
         throw Error(`${error.message}`);
       } else {
-        // setMessage("No se pudo conectar con el servidor");
+        setMessage("No se pudo conectar con el servidor");
         throw new Error("No se pudo conectar con el servidor");
       }
     }
   };
-
-  console.log(academicProductId);
   return (
     <section>
       <h1 className="text-secondary font-semibold text-3xl mb-10">
@@ -126,6 +137,9 @@ export const GradeRegister = () => {
         ))}
       </select>
       <RegisterTable students={students} onSubmit={onSubmit} />
+      <Modal open={open} type={type} onClose={() => setOpen(false)}>
+        <p className="tablet:mt-3 tablet:text-lg">{message}</p>
+      </Modal>
     </section>
   );
 };

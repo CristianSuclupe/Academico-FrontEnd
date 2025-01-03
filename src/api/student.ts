@@ -57,7 +57,7 @@ export class Student {
     try {
       const token = await tokenController.getToken();
       if (!token) return null;
-      const url = `${ENV.API_URL}/${ENV.ENDPOINTS.STUDENT}/${ENV.ENDPOINTS.CLASS}/${classId}?academicproduct=${academicProductId}`;
+      const url = `${ENV.API_URL}/${ENV.ENDPOINTS.STUDENT}/${ENV.ENDPOINTS.CLASS}/${classId}?productAcademicId=${academicProductId}`;
       const params = {
         headers: {
           Authorization: `Bearer ${token}`,
