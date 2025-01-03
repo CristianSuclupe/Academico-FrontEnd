@@ -8,6 +8,7 @@ export const ENV = {
     TEACHER: "teacher",
     STUDENT: "student",
     REGISTER: "register",
+    ACADEMICPRODUCT: "academicproduct",
   },
   TOKEN: "token",
 };

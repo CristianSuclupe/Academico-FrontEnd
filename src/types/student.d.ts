@@ -11,6 +11,5 @@ export interface IStudentPerClass {
 
 export interface IRegisterTableProps {
   students: IStudentPerClass[] | undefined;
-  registerNotes: IRegisterNote[];
-  setRegisterNotes: React.Dispatch<React.SetStateAction<IRegisterNote[]>>;
+  onSubmit: (data: IRegisterNote[]) => void;
 }

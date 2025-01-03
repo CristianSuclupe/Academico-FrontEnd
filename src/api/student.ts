@@ -53,11 +53,11 @@ export class Student {
     }
   };
 
-  ListStudentPerClass = async (classId: number) => {
+  ListStudentPerClass = async (classId: number, academicProductId: number) => {
     try {
       const token = await tokenController.getToken();
       if (!token) return null;
-      const url = `${ENV.API_URL}/${ENV.ENDPOINTS.STUDENT}/${ENV.ENDPOINTS.CLASS}/${classId}`;
+      const url = `${ENV.API_URL}/${ENV.ENDPOINTS.STUDENT}/${ENV.ENDPOINTS.CLASS}/${classId}?academicproduct=${academicProductId}`;
       const params = {
         headers: {
           Authorization: `Bearer ${token}`,
