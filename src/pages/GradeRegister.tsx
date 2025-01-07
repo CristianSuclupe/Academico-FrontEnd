@@ -107,6 +107,7 @@ export const GradeRegister = () => {
     } catch (error) {
       setOpen(true);
       if (error instanceof Error) {
+        setType("Error");
         setMessage(error.message);
         throw Error(`${error.message}`);
       } else {
@@ -120,26 +121,29 @@ export const GradeRegister = () => {
       <h1 className="text-secondary font-semibold text-3xl mb-10">
         Registrar notas
       </h1>
-      <select
-        name="academicProduct"
-        id="academicProduct"
-        value={academicProductId || 0}
-        autoFocus
-        onChange={onChangeSelect}
-      >
-        {academicProducts.map((academicProduct) => (
-          <option
-            key={academicProduct.academicProductId}
-            value={academicProduct.academicProductId}
-          >
-            {academicProduct.name}
-          </option>
-        ))}
-      </select>
-      <RegisterTable students={students} onSubmit={onSubmit} />
-      <Modal open={open} type={type} onClose={() => setOpen(false)}>
-        <p className="tablet:mt-3 tablet:text-lg">{message}</p>
-      </Modal>
+      <div className="border-2 rounded-2xl shadow-3xl p-5 border-zinc-200">
+        <select
+          name="academicProduct"
+          id="academicProduct"
+          className="absolute right-48 w-32 border-2 rounded-lg border-slate-400"
+          value={academicProductId || 0}
+          autoFocus
+          onChange={onChangeSelect}
+        >
+          {academicProducts.map((academicProduct) => (
+            <option
+              key={academicProduct.academicProductId}
+              value={academicProduct.academicProductId}
+            >
+              {academicProduct.name}
+            </option>
+          ))}
+        </select>
+        <RegisterTable students={students} onSubmit={onSubmit} />
+        <Modal open={open} type={type} onClose={() => setOpen(false)}>
+          <p className="tablet:mt-3 tablet:text-lg">{message}</p>
+        </Modal>
+      </div>
     </section>
   );
 };

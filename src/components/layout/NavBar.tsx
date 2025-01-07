@@ -61,7 +61,9 @@ export const NavBar = ({ isSidebarOpen, toggleSidebar }: INavbarProps) => {
           </Link>
         </li>
       </ul>
-      <button onClick={handleLogout}>Salir</button>
+      <button className="" onClick={handleLogout}>
+        Salir
+      </button>
     </nav>
   );
 };
